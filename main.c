@@ -135,3 +135,54 @@ float sacar(float saldo, Operacao historico[], int *total) {
     pausar();
     return saldo;
 }
+ 
+void extrato(float saldo, Operacao historico[], int total) {
+    printf("\n  --- EXTRATO ---\n\n");
+ 
+    if(total == 0) {
+        printf("  Nenhuma movimentacao ainda.\n\n");
+    } else {
+        int i;
+        for(i = 0; i < total; i++) {
+            printf("  %d) %s  R$ %.2f  -> saldo: R$ %.2f\n",
+                i+1, historico[i].tipo, historico[i].valor, historico[i].saldoDepois);
+        }
+        printf("\n");
+    }
+ 
+    printf("  Saldo atual: R$ %.2f\n", saldo);
+    printf("  ---------------\n\n");
+    pausar();
+}
+ 
+void salvarOperacao(Operacao historico[], int *total, char tipo[], float valor, float saldoDepois) {
+    if(*total < 3) {
+        strcpy(historico[*total].tipo, tipo);
+        historico[*total].valor = valor;
+        historico[*total].saldoDepois = saldoDepois;
+        (*total)++;
+    } else {
+        int i;
+        for(i = 0; i < 2; i++) {
+            historico[i] = historico[i+1];
+        }
+        strcpy(historico[2].tipo, tipo);
+        historico[2].valor = valor;
+        historico[2].saldoDepois = saldoDepois;
+    }
+}
+ 
+void pausar() {
+    printf("  Pressione Enter para continuar...");
+    getchar();
+}
+ 
+void limparTela() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+    
